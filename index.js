@@ -26,3 +26,25 @@ app.post("/get-secret", async (req, res) => {
   }
 });
 
+app.post("/post-secret", async (req, res) => {
+
+  const id = req.body.id
+  const secret = req.body.secret;
+  const score = req.body.score
+  try {
+    const result = await axios.post(API_URL + "/secrets/", { id:id, secret: secret, score: score}, config)
+    const response = JSON.stringify(result.data, null, 2)
+    res.render('index.ejs', { content: response } );
+
+  } catch(error) {
+    console.error('Failed to make request', error.message)
+    res.render('index.ejs', {
+      error: error.message
+    })
+  }
+});
+
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});

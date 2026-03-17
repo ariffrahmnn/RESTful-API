@@ -79,6 +79,20 @@ app.post("/patch-secret", async (req, res) => {
   }
   });
 
+app.post("/delete-secret", async (req, res) => {
+  const searchId = req.body.id;
+  
+  try{
+    const response = await axios.delete(API_URL + "/secrets/" + searchId, config)
+    const result = JSON.stringify(response.data);
+    res.render('index.ejs', {content: result});
+
+  } catch(error) {
+    console.error('Failed to make a request', error.message);
+    res.render('index.ejs', {error: error.message})
+  }   
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
